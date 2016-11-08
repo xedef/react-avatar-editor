@@ -80,6 +80,7 @@ const AvatarEditor = React.createClass({
     height: React.PropTypes.number,
     color: React.PropTypes.arrayOf(React.PropTypes.number),
     style: React.PropTypes.object,
+    allowCrossOrigin: React.PropTypes.bool,
 
     onDropFile: React.PropTypes.func,
     onLoadFailure: React.PropTypes.func,
@@ -99,6 +100,7 @@ const AvatarEditor = React.createClass({
       height: 200,
       color: [0, 0, 0, 0.5],
       style: {},
+      allowCrossOrigin: true,
       onDropFile () {
       },
       onLoadFailure () {
@@ -204,7 +206,9 @@ const AvatarEditor = React.createClass({
     const imageObj = new Image()
     imageObj.onload = this.handleImageReady.bind(this, imageObj)
     imageObj.onerror = this.props.onLoadFailure
-    if (!this.isDataURL(imageURL)) imageObj.crossOrigin = 'anonymous'
+    if (!this.props.allowCrossOrigin && !this.isDataURL(imageURL)) {
+      imageObj.crossOrigin = 'anonymous'
+    }
     imageObj.src = imageURL
   },
 
